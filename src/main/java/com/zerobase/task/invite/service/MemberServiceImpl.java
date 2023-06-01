@@ -1,9 +1,5 @@
 package com.zerobase.task.invite.service;
 
-import com.zerobase.task.invite.dto.InviteRequest;
-import com.zerobase.task.invite.dto.InviteRequestMapper;
-import com.zerobase.task.invite.exception.AuthorityException;
-import com.zerobase.task.invite.persistence.InviteRepository;
 import com.zerobase.task.invite.persistence.MemberRepository;
 import com.zerobase.task.invite.persistence.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +15,6 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
-    private final InviteRepository inviteRepository;
 
     @Override
     @Transactional(readOnly = true)

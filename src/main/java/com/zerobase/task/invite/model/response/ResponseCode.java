@@ -8,7 +8,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum Response {
+public enum ResponseCode {
     SUCCESS(0, "성공하였습니다."),
     FAIL(-1, "실패하였습니다.");
 

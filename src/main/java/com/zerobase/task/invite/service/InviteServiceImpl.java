@@ -12,7 +12,6 @@ import com.zerobase.task.invite.persistence.enums.MemberStatus;
 import com.zerobase.task.invite.persistence.enums.Rank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.InvalidPropertyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +22,14 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class InviteServiceImpl implements InviteService{
 
+    private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final InviteRepository inviteRepository;
+
+    @Override
+    public Invite getInvite(Long inviteId) {
+        return inviteRepository.findById(inviteId).orElse(null);
+    }
 
     /**
      * 초대한 사람의 정보를 조회한다
@@ -74,10 +79,10 @@ public class InviteServiceImpl implements InviteService{
     @Transactional
     public Invite acceptInvite(Long invite_id) {
         // 회원 조회
-        Invite invite = inviteRepository.findById(invite_id).orElseThrow(NoSuchElementException::new);
+        Invite invite = inviteRepository.findById(invite_id).orElseThrow(() -> new IllegalArgumentException("초대자의 정보가 존재하지 않습니다."));
 
         // 승인 가능 상태가 아니면 예외 발생
-        if(invite.getInviteStatus() == InviteStatus.EXPIRED) throw new InvalidPropertyException(InviteStatus.class, "invite_status", "승인 가능 상태여야만 가능 합니다.");
+        if(invite.getInviteStatus() == InviteStatus.EXPIRED) throw new IllegalArgumentException("승인 가능 상태여야만 가능 합니다.");
         // 회원 상태 정규 회원으로 변경
         Member member = memberRepository.findById(invite.getParticipantMemberId()).orElseThrow(NoSuchElementException::new);
         member.setMemberStatus(MemberStatus.REGULAR);

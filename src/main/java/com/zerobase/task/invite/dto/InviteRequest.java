@@ -1,6 +1,5 @@
 package com.zerobase.task.invite.dto;
 
-import com.zerobase.task.invite.persistence.enums.Rank;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

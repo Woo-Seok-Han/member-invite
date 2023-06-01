@@ -16,17 +16,16 @@ public class InviteController {
     private final InviteService inviteService;
 
     @PostMapping(path = "/invite")
-    @ResponseBody
     public ResponseEntity createInvite(@RequestBody InviteRequest InviteRequest) {
         log.info("inviteDto={}", InviteRequest.toString());
         return ResponseEntity.ok(inviteService.createInvite(InviteRequest));
     }
 
-    @PutMapping(path = "/invite/{invite_id}")
-    @ResponseBody
-    public ResponseEntity acceptInvite(@PathVariable Long invite_id) {
-        log.info("invite_id={}", invite_id);
-        inviteService.acceptInvite(invite_id);
-        return ResponseEntity.ok(invite_id);
+    @PutMapping(path = "/invite/{inviteId}")
+    public ResponseEntity acceptInvite(@PathVariable Long inviteId) {
+        log.info("invite_id={}", inviteId);
+        Invite acceptedInvite = inviteService.acceptInvite(inviteId);
+        return ResponseEntity.ok(acceptedInvite);
     }
+
 }

@@ -5,7 +5,6 @@ import com.zerobase.task.invite.persistence.entity.Member;
 import com.zerobase.task.invite.persistence.enums.InviteStatus;
 import com.zerobase.task.invite.persistence.enums.MemberStatus;
 import com.zerobase.task.invite.persistence.enums.Rank;
-import com.zerobase.task.invite.persistence.enums.YnValue;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
