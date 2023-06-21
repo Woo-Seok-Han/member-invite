@@ -12,14 +12,14 @@ public class InviteRequest {
     private Long inviterMemberId;
 
     @NotBlank
-    @Email(message = "이메일을 양식을 지켜주세요.")
+    @Email(message = "이메일을 입력해주세요.")
     private String email;
-    @NotBlank
+    @NotBlank(message = "이름을 입력해주세요.")
     private String name;
 
     private Integer age;
 
-    @NotBlank
+    @NotBlank(message = "전화번호를 입력해주세요.")
     private String phoneNumber;
 
 }

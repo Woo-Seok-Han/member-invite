@@ -1,7 +1,7 @@
 package com.zerobase.task.invite.domain.member.service;
 
 import com.zerobase.task.invite.global.error.exception.BusinessException;
-import com.zerobase.task.invite.global.error.exception.ErrorCode;
+import com.zerobase.task.invite.api.common.model.constant.ErrorCode;
 import com.zerobase.task.invite.domain.member.persistence.MemberRepository;
 import com.zerobase.task.invite.domain.member.persistence.entity.Member;
 import lombok.RequiredArgsConstructor;

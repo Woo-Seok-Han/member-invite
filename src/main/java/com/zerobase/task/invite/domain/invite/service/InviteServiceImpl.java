@@ -2,16 +2,15 @@ package com.zerobase.task.invite.domain.invite.service;
 
 import com.zerobase.task.invite.api.invite.dto.InviteRequest;
 import com.zerobase.task.invite.api.invite.dto.InviteRequestMapper;
-import com.zerobase.task.invite.domain.member.persistence.enums.MemberRank;
-import com.zerobase.task.invite.domain.member.service.MemberService;
+import com.zerobase.task.invite.domain.member.constant.MemberRank;
 import com.zerobase.task.invite.global.error.exception.BusinessException;
-import com.zerobase.task.invite.global.error.exception.ErrorCode;
+import com.zerobase.task.invite.api.common.model.constant.ErrorCode;
 import com.zerobase.task.invite.domain.invite.persistence.InviteRepository;
 import com.zerobase.task.invite.domain.member.persistence.MemberRepository;
 import com.zerobase.task.invite.domain.invite.persistence.entity.Invite;
 import com.zerobase.task.invite.domain.member.persistence.entity.Member;
-import com.zerobase.task.invite.domain.invite.persistence.enums.InviteStatus;
-import com.zerobase.task.invite.domain.member.persistence.enums.MemberStatus;
+import com.zerobase.task.invite.domain.invite.constant.InviteStatus;
+import com.zerobase.task.invite.domain.member.constant.MemberStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,6 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class InviteServiceImpl implements InviteService{
 
-    private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final InviteRepository inviteRepository;
 
@@ -51,7 +49,7 @@ public class InviteServiceImpl implements InviteService{
                 , inviteRequest);
 
         // 그룹 매니저만이 회원을 초대 할 수 있다
-        if(memberRepository.findById(inviteRequest.getInviterMemberId()).get().getMemberRank() != MemberRank.MANAGER)
+        if(memberRepository.findById(inviteRequest.getInviterMemberId()).orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND)).getMemberRank() != MemberRank.MANAGER)
             throw new BusinessException(ErrorCode.UNAUTHORIZED_INVITER_TYPE);
 
         // 임시 회원 생성
@@ -87,7 +85,7 @@ public class InviteServiceImpl implements InviteService{
         Invite invite = inviteRepository.findById(invite_id).orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
         // 승인 가능 상태가 아니면 예외 발생
-        if(invite.getInviteStatus() == InviteStatus.EXPIRED) throw new IllegalArgumentException("승인 가능 상태여야만 가능 합니다.");
+        if(invite.getInviteStatus() == InviteStatus.EXPIRED) throw new BusinessException(ErrorCode.INVALID_INVITE);
         // 회원 상태 정규 회원으로 변경
         Member member = memberRepository.findById(invite.getParticipantMemberId()).orElseThrow(NoSuchElementException::new);
         member.setMemberStatus(MemberStatus.REGULAR);

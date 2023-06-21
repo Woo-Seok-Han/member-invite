@@ -2,9 +2,9 @@ package com.zerobase.task.invite.api.invite.dto;
 
 import com.zerobase.task.invite.domain.invite.persistence.entity.Invite;
 import com.zerobase.task.invite.domain.member.persistence.entity.Member;
-import com.zerobase.task.invite.domain.invite.persistence.enums.InviteStatus;
-import com.zerobase.task.invite.domain.member.persistence.enums.MemberStatus;
-import com.zerobase.task.invite.domain.member.persistence.enums.MemberRank;
+import com.zerobase.task.invite.domain.invite.constant.InviteStatus;
+import com.zerobase.task.invite.domain.member.constant.MemberStatus;
+import com.zerobase.task.invite.domain.member.constant.MemberRank;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

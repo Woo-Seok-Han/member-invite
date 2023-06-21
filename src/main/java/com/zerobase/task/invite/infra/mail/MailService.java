@@ -33,7 +33,6 @@ public class MailService {
 
     public void sendMail(String to, String subject ,String content){
 
-        boolean result = false;
         MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
             @Override
             public void prepare(MimeMessage mimeMessage) throws Exception {
@@ -46,7 +45,6 @@ public class MailService {
 
         try {
             javaMailSender.send(mimeMessagePreparator);
-            result = true;
         }catch (Exception e){
             log.error(e.getMessage());
         }

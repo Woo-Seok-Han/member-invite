@@ -1,4 +1,4 @@
-package com.zerobase.task.invite.global.error.exception;
+package com.zerobase.task.invite.api.common.model.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +10,7 @@ public enum ErrorCode {
 
     // 초대 (Invite)
     UNAUTHORIZED_INVITER_TYPE(HttpStatus.BAD_REQUEST, "I-001", "그룹의 매니저만 초대 할 수 있습니다"),
+    INVALID_INVITE(HttpStatus.BAD_REQUEST, "I-002", "유효한 초대가 아닙니다."),
 
     // 회원 (Member)
     ALREADY_REGISTERED_MEMBER(HttpStatus.BAD_REQUEST, "M-001", "이미 가입된 회원입니다."),
@@ -18,7 +19,7 @@ public enum ErrorCode {
     ;
 
     private final HttpStatus httpStatus;
-    private final String errorCode;
-    private final String errorMessage;
+    private final String code;
+    private final String message;
 
 }

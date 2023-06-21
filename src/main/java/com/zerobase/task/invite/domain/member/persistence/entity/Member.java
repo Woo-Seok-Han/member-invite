@@ -1,8 +1,8 @@
 package com.zerobase.task.invite.domain.member.persistence.entity;
 
 import com.zerobase.task.invite.domain.common.BaseEntity;
-import com.zerobase.task.invite.domain.member.persistence.enums.MemberRank;
-import com.zerobase.task.invite.domain.member.persistence.enums.MemberStatus;
+import com.zerobase.task.invite.domain.member.constant.MemberRank;
+import com.zerobase.task.invite.domain.member.constant.MemberStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

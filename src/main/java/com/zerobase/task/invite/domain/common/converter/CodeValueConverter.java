@@ -1,6 +1,6 @@
-package com.zerobase.task.invite.domain.invite.persistence.converter;
+package com.zerobase.task.invite.domain.common.converter;
 
-import com.zerobase.task.invite.domain.invite.persistence.enums.CodeValue;
+import com.zerobase.task.invite.domain.common.constant.CodeValue;
 import jakarta.persistence.AttributeConverter;
 
 import java.util.EnumSet;

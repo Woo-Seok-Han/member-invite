@@ -1,6 +1,6 @@
-package com.zerobase.task.invite.domain.invite.persistence.converter;
+package com.zerobase.task.invite.domain.common.converter;
 
-import com.zerobase.task.invite.domain.invite.persistence.enums.YnValue;
+import com.zerobase.task.invite.domain.common.constant.YnValue;
 import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)

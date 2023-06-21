@@ -1,7 +1,8 @@
 package com.zerobase.task.invite.api.member.controller;
 
+import com.zerobase.task.invite.api.common.model.ApiResponse;
 import com.zerobase.task.invite.global.error.exception.BusinessException;
-import com.zerobase.task.invite.global.error.exception.ErrorCode;
+import com.zerobase.task.invite.api.common.model.constant.ErrorCode;
 import com.zerobase.task.invite.infra.mail.MailService;
 import com.zerobase.task.invite.domain.member.persistence.MemberRepository;
 import com.zerobase.task.invite.domain.member.persistence.entity.Member;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Slf4j
 @Controller
@@ -24,15 +24,16 @@ public class MemberController {
     private final MailService mailService;
 
     @GetMapping(value = "/member")
-    public ResponseEntity<List<Member>> getMember(){
+    public ResponseEntity<List<Member>> getAllMember(){
         List<Member> memberList = memberRepository.findAll();
 
         return ResponseEntity.ok(memberList);
     }
 
     @GetMapping(value = "/member/{memberId}")
-    public ResponseEntity<Member> getMember(@PathVariable("memberId") Long memberId){
-        return ResponseEntity.ok(memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND)));
+    public ResponseEntity<?> getMember(@PathVariable("memberId") Long memberId){
+        //return ResponseEntity.ok(memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND)));
+        return ApiResponse.createSuccess(memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND)));
     }
 
     @PostMapping(path = "/member")

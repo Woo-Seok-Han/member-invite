@@ -1,4 +1,4 @@
-package com.zerobase.task.invite.domain.member.persistence.enums;
+package com.zerobase.task.invite.domain.member.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
