@@ -39,8 +39,17 @@ public class ApiResponse<T>{
                                 .build());
     }
 
+    public static ResponseEntity<ApiResponse<?>> createError(String errorMessage){
+        return ResponseEntity.ok()
+                .body(
+                        ApiResponse.builder()
+                                .code(ERROR_CODE)
+                                .message(errorMessage)
+                                .build());
+    }
+
     /**
-     * BusinessException 이외의 예외
+     * 이외의 예외
      * @param e
      * @return
      */

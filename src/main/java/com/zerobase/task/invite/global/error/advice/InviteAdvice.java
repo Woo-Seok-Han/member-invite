@@ -4,23 +4,25 @@ import com.zerobase.task.invite.api.common.model.ApiResponse;
 import com.zerobase.task.invite.global.error.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
 
 @Slf4j
 @RestControllerAdvice
 public class InviteAdvice {
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-//        String errorMessage = e.getBindingResult()
-//                .getAllErrors()
-//                .get(0)
-//                .getDefaultMessage();
-//
-//        printExceptionMessage(errorMessage);
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse.of)
-//        return new ResponseEntity<>(new BaseResult.Normal(INVALID_PARAMETER), HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error("MethodArgumentNotValidException : ", e);
+        String errorMessage = e.getBindingResult()
+                .getAllErrors()
+                .get(0)
+                .getDefaultMessage();
+
+        return ApiResponse.createError(errorMessage);
+    }
 
     @ExceptionHandler({BusinessException.class})
     public ResponseEntity handleBusinessException(BusinessException e){

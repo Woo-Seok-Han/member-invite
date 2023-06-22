@@ -44,7 +44,7 @@ public class InviteServiceImpl implements InviteService{
     public Invite createInvite(InviteRequest inviteRequest) {
 
         // 초대 생성시 초기에는 임시 회원으로 생성
-        Member tempMember = InviteRequestMapper.INSTANCE.InviteRequestToMember(MemberStatus.TEMPORARY
+        Member tempMember = InviteRequestMapper    .INSTANCE.InviteRequestToMember(MemberStatus.TEMPORARY
                 , MemberRank.EMPLOYEE
                 , inviteRequest);
 
