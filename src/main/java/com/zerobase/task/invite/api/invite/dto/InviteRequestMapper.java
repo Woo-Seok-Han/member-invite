@@ -11,16 +11,17 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface InviteRequestMapper {
+
     InviteRequestMapper INSTANCE = Mappers.getMapper(InviteRequestMapper.class);
 
     @Mapping(target = "memberId", ignore = true)
-    Member InviteRequestToMember(MemberStatus memberStatus
-            , MemberRank memberRank
-            , InviteRequest inviteRequest);
+    Member InviteRequestToMember(
+        MemberStatus memberStatus, MemberRank memberRank, InviteRequest inviteRequest);
 
     @Mapping(target = "inviteId", ignore = true)
-    Invite InviteRequestToInvite(String inviteUrl
-            , Long participantMemberId
-            , InviteStatus inviteStatus
-            , InviteRequest inviteRequest);
+    Invite InviteRequestToInvite(
+        String inviteUrl,
+        Long participantMemberId,
+        InviteStatus inviteStatus,
+        InviteRequest inviteRequest);
 }

@@ -14,6 +14,7 @@ public class InviteRequest {
     @NotBlank
     @Email(message = "이메일을 입력해주세요.")
     private String email;
+
     @NotBlank(message = "이름을 입력해주세요.")
     private String name;
 
@@ -21,5 +22,4 @@ public class InviteRequest {
 
     @NotBlank(message = "전화번호를 입력해주세요.")
     private String phoneNumber;
-
 }

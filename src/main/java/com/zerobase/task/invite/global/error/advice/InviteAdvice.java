@@ -13,19 +13,20 @@ import java.util.List;
 @Slf4j
 @RestControllerAdvice
 public class InviteAdvice {
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error("MethodArgumentNotValidException : ", e);
         String errorMessage = e.getBindingResult()
-                .getAllErrors()
-                .get(0)
-                .getDefaultMessage();
+            .getAllErrors()
+            .get(0)
+            .getDefaultMessage();
 
         return ApiResponse.createError(errorMessage);
     }
 
     @ExceptionHandler({BusinessException.class})
-    public ResponseEntity handleBusinessException(BusinessException e){
+    public ResponseEntity handleBusinessException(BusinessException e) {
         log.error("BusinessException : ", e);
         //ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode());
         //return ResponseEntity.status(e.getErrorCode().getHttpStatus()).body(errorResponse);

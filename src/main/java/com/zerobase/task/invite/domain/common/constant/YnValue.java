@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum YnValue implements CodeValue {
-
     Y("1", "Y"),
     N("0", "N");
 

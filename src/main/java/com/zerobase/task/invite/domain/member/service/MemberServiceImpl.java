@@ -18,6 +18,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member getMember(Long member_id) {
         return memberRepository.findById(member_id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
     }
 }

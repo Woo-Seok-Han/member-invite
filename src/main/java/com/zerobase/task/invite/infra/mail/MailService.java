@@ -21,7 +21,7 @@ public class MailService {
 
     private final JavaMailSender javaMailSender;
 
-    public void sendTextMail(String to, String subject ,String content) {
+    public void sendTextMail(String to, String subject, String content) {
         SimpleMailMessage smm = new SimpleMailMessage();
 
         smm.setTo(to);
@@ -31,12 +31,13 @@ public class MailService {
         mailSender.send(smm);
     }
 
-    public void sendMail(String to, String subject ,String content){
+    public void sendMail(String to, String subject, String content) {
 
         MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
             @Override
             public void prepare(MimeMessage mimeMessage) throws Exception {
-                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true,
+                    "UTF-8");
                 mimeMessageHelper.setTo(to);
                 mimeMessageHelper.setSubject(subject);
                 mimeMessageHelper.setText(content, true);
@@ -45,7 +46,7 @@ public class MailService {
 
         try {
             javaMailSender.send(mimeMessagePreparator);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
         }
     }
