@@ -1,6 +1,7 @@
 package com.zerobase.task.invite.global.error.exception;
 
-public class AuthorityException extends RuntimeException{
+public class AuthorityException extends RuntimeException {
+
     public AuthorityException() {
         super();
     }
@@ -17,7 +18,8 @@ public class AuthorityException extends RuntimeException{
         super(cause);
     }
 
-    protected AuthorityException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected AuthorityException(String message, Throwable cause, boolean enableSuppression,
+        boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

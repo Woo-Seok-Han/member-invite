@@ -24,16 +24,20 @@ public class MemberController {
     private final MailService mailService;
 
     @GetMapping(value = "/member")
-    public ResponseEntity<List<Member>> getAllMember(){
+    public ResponseEntity<List<Member>> getAllMember() {
         List<Member> memberList = memberRepository.findAll();
 
         return ResponseEntity.ok(memberList);
     }
 
     @GetMapping(value = "/member/{memberId}")
-    public ResponseEntity<?> getMember(@PathVariable("memberId") Long memberId){
-        //return ResponseEntity.ok(memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND)));
-        return ApiResponse.createSuccess(memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND)));
+    public ResponseEntity<?> getMember(@PathVariable("memberId") Long memberId) {
+        // return ResponseEntity.ok(memberRepository.findById(memberId).orElseThrow(() -> new
+        // BusinessException(ErrorCode.MEMBER_NOT_FOUND)));
+        return ApiResponse.createSuccess(
+            memberRepository
+                .findById(memberId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND)));
     }
 
     @PostMapping(path = "/member")
@@ -43,10 +47,8 @@ public class MemberController {
     }
 
     @RequestMapping(value = "/mail/send")
-    public ResponseEntity<String> sendMail(){
-        mailService.sendMail("woosuk1893@naver.com","테스트 메일","<h1>안녕하세요 메일 테스트 입니다.</h1>");
+    public ResponseEntity<String> sendMail() {
+        mailService.sendMail("woosuk1893@naver.com", "테스트 메일", "<h1>안녕하세요 메일 테스트 입니다.</h1>");
         return ResponseEntity.ok("메일이 성공적으로 발송 되었습니다.");
     }
-
-
 }
