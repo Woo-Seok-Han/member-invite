@@ -34,13 +34,7 @@ public class InviteService {
      */
     @Transactional
     public Invite createInvite(final InviteRequest inviteRequest) {
-        // 그룹 매니저만이 회원을 초대 할 수 있다
-        Member member = memberRepository.findById(inviteRequest.getInviterMemberId())
-            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
-
-        if (member.getMemberRank() != MemberRank.MANAGER) {
-            throw new BusinessException(ErrorCode.UNAUTHORIZED_INVITER_TYPE);
-        }
+        verifyInviteRequest(inviteRequest);
 
         // 초대 생성시 초기에는 임시 회원으로 생성
         Member tempMember = new Member(
@@ -65,6 +59,16 @@ public class InviteService {
         );
 
         return inviteRepository.save(invite);
+    }
+
+    private void verifyInviteRequest(final InviteRequest inviteRequest) {
+        // 그룹 매니저만이 회원을 초대 할 수 있다
+        Member member = memberRepository.findById(inviteRequest.getInviterMemberId())
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+
+        if (member.getMemberRank() != MemberRank.MANAGER) {
+            throw new BusinessException(ErrorCode.UNAUTHORIZED_INVITER_TYPE);
+        }
     }
 
     /**
