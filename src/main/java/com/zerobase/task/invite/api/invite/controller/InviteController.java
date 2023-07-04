@@ -17,12 +17,6 @@ public class InviteController {
 
     private final InviteService inviteService;
 
-    //    @PostMapping(path = "/invite")
-    //    public ResponseEntity createInvite(@Valid @RequestBody InviteRequest InviteRequest) {
-    //        log.info("inviteDto={}", InviteRequest.toString());
-    //        return ResponseEntity.ok(inviteService.createInvite(InviteRequest));
-    //    }
-
     @PostMapping(path = "/invite")
     public ResponseEntity createInvite(@Valid @RequestBody InviteRequest InviteRequest) {
         log.info("inviteDto={}", InviteRequest.toString());
