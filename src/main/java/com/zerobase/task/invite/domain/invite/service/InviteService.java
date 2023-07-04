@@ -1,21 +1,18 @@
 package com.zerobase.task.invite.domain.invite.service;
 
-import com.zerobase.task.invite.api.invite.dto.InviteRequest;
-import com.zerobase.task.invite.domain.member.constant.MemberRank;
-import com.zerobase.task.invite.global.error.exception.BusinessException;
 import com.zerobase.task.invite.api.common.model.constant.ErrorCode;
-import com.zerobase.task.invite.domain.invite.persistence.InviteRepository;
-import com.zerobase.task.invite.domain.member.persistence.MemberRepository;
-import com.zerobase.task.invite.domain.invite.persistence.entity.Invite;
-import com.zerobase.task.invite.domain.member.persistence.entity.Member;
+import com.zerobase.task.invite.api.invite.dto.InviteRequest;
 import com.zerobase.task.invite.domain.invite.constant.InviteStatus;
-import com.zerobase.task.invite.domain.member.constant.MemberStatus;
+import com.zerobase.task.invite.domain.invite.persistence.InviteRepository;
+import com.zerobase.task.invite.domain.invite.persistence.entity.Invite;
+import com.zerobase.task.invite.domain.member.constant.MemberRank;
+import com.zerobase.task.invite.domain.member.persistence.MemberRepository;
+import com.zerobase.task.invite.domain.member.persistence.entity.Member;
+import com.zerobase.task.invite.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -25,7 +22,7 @@ public class InviteService {
     private final MemberRepository memberRepository;
     private final InviteRepository inviteRepository;
 
-    public Invite getInvite(Long inviteId) {
+    public Invite getInvite(final Long inviteId) {
         return inviteRepository.findById(inviteId).orElse(null);
     }
 
@@ -36,7 +33,7 @@ public class InviteService {
      * @param inviteRequest
      */
     @Transactional
-    public Invite createInvite(InviteRequest inviteRequest) {
+    public Invite createInvite(final InviteRequest inviteRequest) {
         // 그룹 매니저만이 회원을 초대 할 수 있다
         Member member = memberRepository.findById(inviteRequest.getInviterMemberId())
             .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
@@ -74,7 +71,7 @@ public class InviteService {
      * 회원의 상태를 update 한다 (임시 회원 활성화) 초대의 상태를 update 한다 (초대 만료)
      */
     @Transactional
-    public Invite acceptInvite(Long invite_id) {
+    public Invite acceptInvite(final Long invite_id) {
         // 회원 조회
         Invite invite = inviteRepository.findById(invite_id)
             .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));

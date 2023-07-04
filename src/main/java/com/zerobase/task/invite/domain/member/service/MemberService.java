@@ -15,7 +15,7 @@ public class MemberService{
 
     private final MemberRepository memberRepository;
 
-    public Member getMember(Long member_id) {
+    public Member getMember(final Long member_id) {
         return memberRepository.findById(member_id)
             .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
     }
