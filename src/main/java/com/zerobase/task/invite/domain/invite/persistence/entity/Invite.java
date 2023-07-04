@@ -6,12 +6,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
-@Setter
 @Table
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 public class Invite extends BaseEntity {
 
     @Id
@@ -26,4 +23,16 @@ public class Invite extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private InviteStatus inviteStatus;
+
+    public Invite(Long inviterMemberId, Long participantMemberId, String inviteUrl) {
+        this.inviteId = null;
+        this.inviterMemberId = inviterMemberId;
+        this.participantMemberId = participantMemberId;
+        this.inviteUrl = inviteUrl;
+        this.inviteStatus = InviteStatus.VALID;
+    }
+
+    public void expire() {
+        this.inviteStatus = InviteStatus.EXPIRED;
+    }
 }

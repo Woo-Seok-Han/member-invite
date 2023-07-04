@@ -1,7 +1,6 @@
 package com.zerobase.task.invite.domain.invite.service;
 
 import com.zerobase.task.invite.api.invite.dto.InviteRequest;
-import com.zerobase.task.invite.api.invite.dto.InviteRequestMapper;
 import com.zerobase.task.invite.domain.member.constant.MemberRank;
 import com.zerobase.task.invite.global.error.exception.BusinessException;
 import com.zerobase.task.invite.api.common.model.constant.ErrorCode;
@@ -38,11 +37,6 @@ public class InviteService {
      */
     @Transactional
     public Invite createInvite(InviteRequest inviteRequest) {
-
-        // 초대 생성시 초기에는 임시 회원으로 생성
-        Member tempMember = InviteRequestMapper.INSTANCE.InviteRequestToMember(
-            MemberStatus.TEMPORARY, MemberRank.EMPLOYEE, inviteRequest);
-
         // 그룹 매니저만이 회원을 초대 할 수 있다
         Member member = memberRepository.findById(inviteRequest.getInviterMemberId())
             .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
@@ -51,21 +45,27 @@ public class InviteService {
             throw new BusinessException(ErrorCode.UNAUTHORIZED_INVITER_TYPE);
         }
 
-        // 임시 회원 생성
+        // 초대 생성시 초기에는 임시 회원으로 생성
+        Member tempMember = new Member(
+            inviteRequest.getName(),
+            inviteRequest.getAge(),
+            inviteRequest.getPhoneNumber(),
+            inviteRequest.getEmail()
+        );
+
         Member savedMember = memberRepository.save(tempMember);
 
         // 초대 생성
         // 매핑되어 있는 초대 링크 생성( invite url ) - 추가 개발 예정
-        // getInviteUrl(participantId);
-        Long inviterMemberId = inviteRequest.getInviterMemberId();
+        Long inviterId = inviteRequest.getInviterMemberId();
         Long participantId = savedMember.getMemberId();
         String inviteUrl = "http://localhost:8080/invite/" + participantId;
 
-        Invite invite = Invite.builder().inviterMemberId(inviterMemberId).inviteUrl(inviteUrl)
-            .inviteStatus(InviteStatus.VALID).participantMemberId(participantId).build();
-
-        // Invite invite = InviteRequestMapper.INSTANCE.InviteRequestToInvite(inviteUrl, participantId,
-        // InviteStatus.VALID, inviteRequest);
+        Invite invite = new Invite(
+            inviterId,
+            participantId,
+            inviteUrl
+        );
 
         return inviteRepository.save(invite);
     }
@@ -83,12 +83,14 @@ public class InviteService {
         if (invite.getInviteStatus() == InviteStatus.EXPIRED) {
             throw new BusinessException(ErrorCode.INVALID_INVITE);
         }
-        // 회원 상태 정규 회원으로 변경
+
         Member member = memberRepository.findById(invite.getParticipantMemberId())
-            .orElseThrow(NoSuchElementException::new);
-        member.setMemberStatus(MemberStatus.REGULAR);
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+
+        // 회원 상태 정규 회원으로 변경
+        member.updateRegular();
         // 초대 수락에 따른 초대 만료 처리
-        invite.setInviteStatus(InviteStatus.EXPIRED);
+        invite.expire();
 
         return invite;
     }

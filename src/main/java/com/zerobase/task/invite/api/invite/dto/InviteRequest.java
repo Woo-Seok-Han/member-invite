@@ -2,13 +2,13 @@ package com.zerobase.task.invite.api.invite.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
-@AllArgsConstructor
-@Builder
 public class InviteRequest {
 
+    @NotNull(message = "초대자가 존재 하지 않습니다.")
     private Long inviterMemberId;
 
     @NotBlank
