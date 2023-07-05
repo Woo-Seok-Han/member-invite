@@ -1,5 +1,6 @@
 package com.zerobase.task.invite.domain.invite.service;
 
+import ch.qos.logback.core.spi.ErrorCodes;
 import com.zerobase.task.invite.api.common.model.constant.ErrorCode;
 import com.zerobase.task.invite.api.invite.dto.InviteRequest;
 import com.zerobase.task.invite.domain.common.util.RandomCode;
@@ -11,6 +12,7 @@ import com.zerobase.task.invite.domain.member.persistence.MemberRepository;
 import com.zerobase.task.invite.domain.member.persistence.entity.Member;
 import com.zerobase.task.invite.global.error.exception.BusinessException;
 import com.zerobase.task.invite.infra.mail.MailService;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -52,25 +54,27 @@ public class InviteService {
         Long inviterId = inviteRequest.getInviterMemberId();
         Long participantId = savedMember.getMemberId();
         String subject = "초대장 입니다.";
+        String code = RandomCode.getRandomCode();
 
         // 초대 메일 발송
         mailService.sendMail(
             inviteRequest.getEmail(),
             subject,
-            getInviteMailBody(inviteRequest.getEmail(), inviteRequest.getName(),
-                RandomCode.getRandomCode()));
+            getInviteMailBody(
+                inviteRequest.getEmail(),
+                inviteRequest.getName(),
+                code
+            )
+        );
 
-        return inviteRepository.save(new Invite(
-            inviterId,
-            participantId
-        ));
+        return inviteRepository.save(new Invite(inviterId, participantId, code));
     }
 
     public String getInviteMailBody(String email, String name, String code) {
         StringBuilder builder = new StringBuilder();
         return builder.append("<h2>Hello</h2> ")
             .append(name)
-            .append("<h1>Please click Link for verification.</h1>")
+            .append("<h1>Please click link for your invitation.</h1>")
             .append("http://localhost:8080/invite/verify?email=")
             .append(email)
             .append("&code=")
@@ -92,25 +96,32 @@ public class InviteService {
      * 회원의 상태를 update 한다 (임시 회원 활성화) 초대의 상태를 update 한다 (초대 만료)
      */
     @Transactional
-    public Invite acceptInvite(final Long invite_id) {
-        // 회원 조회
-        Invite invite = inviteRepository.findById(invite_id)
+    public Invite acceptInvite(final String email, final String code) {
+        Member invitedMember = memberRepository.findByEmail(email)
             .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
-        // 승인 가능 상태가 아니면 예외 발생
-        if (invite.getInviteStatus() == InviteStatus.EXPIRED) {
-            throw new BusinessException(ErrorCode.INVALID_INVITE);
-        }
+        Invite invite = inviteRepository.findByParticipantMemberId(invitedMember.getMemberId())
+            .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_INVITE));
 
-        Member member = memberRepository.findById(invite.getParticipantMemberId())
-            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+        verifyInvite(invite, code);
 
         // 회원 상태 정규 회원으로 변경
-        member.updateRegular();
+        invitedMember.updateRegular();
         // 초대 수락에 따른 초대 만료 처리
         invite.expire();
 
         return invite;
+    }
+
+    public void verifyInvite(Invite invite, final String code) {
+        // 승인 가능 상태가 아니면 예외 발생
+        if (invite.getInviteStatus() != InviteStatus.VALID) {
+            throw new BusinessException(ErrorCode.ALREADY_VERIFIED);
+        } else if (invite.getVerifyExpiredAt().isBefore(LocalDateTime.now())) {
+            throw new BusinessException(ErrorCode.EXPIRED_INVITE);
+        } else if (!invite.getVerificationCode().equals(code)) {
+            throw new BusinessException(ErrorCode.INVALID_INVITE);
+        }
     }
 
     /**
