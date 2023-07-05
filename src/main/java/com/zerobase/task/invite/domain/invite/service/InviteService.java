@@ -2,6 +2,7 @@ package com.zerobase.task.invite.domain.invite.service;
 
 import com.zerobase.task.invite.api.common.model.constant.ErrorCode;
 import com.zerobase.task.invite.api.invite.dto.InviteRequest;
+import com.zerobase.task.invite.domain.common.util.RandomCode;
 import com.zerobase.task.invite.domain.invite.constant.InviteStatus;
 import com.zerobase.task.invite.domain.invite.persistence.InviteRepository;
 import com.zerobase.task.invite.domain.invite.persistence.entity.Invite;
@@ -9,6 +10,7 @@ import com.zerobase.task.invite.domain.member.constant.MemberRank;
 import com.zerobase.task.invite.domain.member.persistence.MemberRepository;
 import com.zerobase.task.invite.domain.member.persistence.entity.Member;
 import com.zerobase.task.invite.global.error.exception.BusinessException;
+import com.zerobase.task.invite.infra.mail.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ public class InviteService {
 
     private final MemberRepository memberRepository;
     private final InviteRepository inviteRepository;
+    private final MailService mailService;
 
     public Invite getInvite(final Long inviteId) {
         return inviteRepository.findById(inviteId).orElse(null);
@@ -46,19 +49,33 @@ public class InviteService {
 
         Member savedMember = memberRepository.save(tempMember);
 
-        // 초대 생성
-        // 매핑되어 있는 초대 링크 생성( invite url ) - 추가 개발 예정
         Long inviterId = inviteRequest.getInviterMemberId();
         Long participantId = savedMember.getMemberId();
-        String inviteUrl = "http://localhost:8080/invite/" + participantId;
+        String subject = "초대장 입니다.";
 
-        Invite invite = new Invite(
+        // 초대 메일 발송
+        mailService.sendMail(
+            inviteRequest.getEmail(),
+            subject,
+            getInviteMailBody(inviteRequest.getEmail(), inviteRequest.getName(),
+                RandomCode.getRandomCode()));
+
+        return inviteRepository.save(new Invite(
             inviterId,
-            participantId,
-            inviteUrl
-        );
+            participantId
+        ));
+    }
 
-        return inviteRepository.save(invite);
+    public String getInviteMailBody(String email, String name, String code) {
+        StringBuilder builder = new StringBuilder();
+        return builder.append("<h2>Hello</h2> ")
+            .append(name)
+            .append("<h1>Please click Link for verification.</h1>")
+            .append("http://localhost:8080/invite/verify?email=")
+            .append(email)
+            .append("&code=")
+            .append(code)
+            .toString();
     }
 
     private void verifyInviteRequest(final InviteRequest inviteRequest) {

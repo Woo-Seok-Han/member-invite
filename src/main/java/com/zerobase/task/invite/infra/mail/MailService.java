@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 public class MailService {
 
     private final MailSender mailSender;
-
     private final JavaMailSender javaMailSender;
 
     public void sendTextMail(String to, String subject, String content) {

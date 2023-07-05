@@ -12,23 +12,20 @@ import lombok.*;
 public class Invite extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long inviteId;
 
     private Long inviterMemberId;
 
     private Long participantMemberId;
 
-    private String inviteUrl;
-
     @Enumerated(EnumType.STRING)
     private InviteStatus inviteStatus;
 
-    public Invite(Long inviterMemberId, Long participantMemberId, String inviteUrl) {
+    public Invite(Long inviterMemberId, Long participantMemberId) {
         this.inviteId = null;
         this.inviterMemberId = inviterMemberId;
         this.participantMemberId = participantMemberId;
-        this.inviteUrl = inviteUrl;
         this.inviteStatus = InviteStatus.VALID;
     }
 
