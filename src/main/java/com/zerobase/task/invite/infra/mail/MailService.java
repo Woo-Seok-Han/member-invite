@@ -10,6 +10,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service

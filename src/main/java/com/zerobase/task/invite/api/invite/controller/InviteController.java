@@ -17,14 +17,20 @@ public class InviteController {
 
     private final InviteService inviteService;
 
+    //    @PostMapping(path = "/invite")
+    //    public ResponseEntity createInvite(@Valid @RequestBody InviteRequest InviteRequest) {
+    //        log.info("inviteDto={}", InviteRequest.toString());
+    //        return ResponseEntity.ok(inviteService.createInvite(InviteRequest));
+    //    }
+
     @PostMapping(path = "/invite")
-    public ResponseEntity createInvite(@Valid @RequestBody final InviteRequest InviteRequest) {
+    public ResponseEntity createInvite(@Valid @RequestBody InviteRequest InviteRequest) {
         log.info("inviteDto={}", InviteRequest.toString());
         return ApiResponse.createSuccess(inviteService.createInvite(InviteRequest));
     }
 
     @PutMapping(path = "/invite/{inviteId}")
-    public ResponseEntity acceptInvite(@PathVariable final Long inviteId) {
+    public ResponseEntity acceptInvite(@PathVariable Long inviteId) {
         log.info("invite_id={}", inviteId);
         Invite acceptedInvite = inviteService.acceptInvite(inviteId);
         return ResponseEntity.ok(acceptedInvite);
