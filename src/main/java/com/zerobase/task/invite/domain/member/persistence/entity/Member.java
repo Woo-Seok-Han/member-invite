@@ -7,12 +7,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
-@Setter
 @Table(name = "MEMBER")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 public class Member extends BaseEntity {
 
     @Id
@@ -33,4 +30,17 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus;
 
+    public Member(String name, Integer age, String phoneNumber, String email) {
+        this.memberId = null;
+        this.name = name;
+        this.age = age;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.memberRank = MemberRank.EMPLOYEE;
+        this.memberStatus = MemberStatus.TEMPORARY;
+    }
+
+    public void updateRegular() {
+        this.memberStatus = MemberStatus.REGULAR;
+    }
 }

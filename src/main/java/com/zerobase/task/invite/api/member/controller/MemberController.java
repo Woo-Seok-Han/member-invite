@@ -31,7 +31,7 @@ public class MemberController {
     }
 
     @GetMapping(value = "/member/{memberId}")
-    public ResponseEntity<?> getMember(@PathVariable("memberId") Long memberId) {
+    public ResponseEntity<?> getMember(@PathVariable("memberId") final Long memberId) {
         // return ResponseEntity.ok(memberRepository.findById(memberId).orElseThrow(() -> new
         // BusinessException(ErrorCode.MEMBER_NOT_FOUND)));
         return ApiResponse.createSuccess(
@@ -41,7 +41,7 @@ public class MemberController {
     }
 
     @PostMapping(path = "/member")
-    public ResponseEntity<Member> saveMember(@RequestBody Member member) {
+    public ResponseEntity<Member> saveMember(@RequestBody final Member member) {
         Member savedMember = memberRepository.save(member);
         return ResponseEntity.ok(savedMember);
     }
