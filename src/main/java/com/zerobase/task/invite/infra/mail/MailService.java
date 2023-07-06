@@ -10,15 +10,12 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
-
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class MailService {
 
     private final MailSender mailSender;
-
     private final JavaMailSender javaMailSender;
 
     public void sendTextMail(String to, String subject, String content) {
