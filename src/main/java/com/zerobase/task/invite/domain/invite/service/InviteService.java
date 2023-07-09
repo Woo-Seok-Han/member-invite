@@ -37,38 +37,38 @@ public class InviteService {
      *
      * @param inviteRequest
      */
-    @Transactional
-    public Invite createInvite(final InviteRequest inviteRequest) {
-        verifyInviteRequest(inviteRequest);
-
-        // 초대 생성시 초기에는 임시 회원으로 생성
-        Member tempMember = new Member(
-            inviteRequest.getName(),
-            inviteRequest.getAge(),
-            inviteRequest.getPhoneNumber(),
-            inviteRequest.getEmail()
-        );
-
-        Member savedMember = memberRepository.save(tempMember);
-
-        Long inviterId = inviteRequest.getInviterMemberId();
-        Long participantId = savedMember.getMemberId();
-        String subject = "초대장 입니다.";
-        String code = RandomCode.getRandomCode();
-
-        // 초대 메일 발송
-        mailService.sendMail(
-            inviteRequest.getEmail(),
-            subject,
-            getInviteMailBody(
-                inviteRequest.getEmail(),
-                inviteRequest.getName(),
-                code
-            )
-        );
-
-        return inviteRepository.save(new Invite(inviterId, participantId, code));
-    }
+//    @Transactional
+//    public Invite createInvite(final InviteRequest inviteRequest) {
+//        verifyInviteRequest(inviteRequest);
+//
+//        // 초대 생성시 초기에는 임시 회원으로 생성
+//        Member tempMember = new Member(
+//            inviteRequest.getName(),
+//            inviteRequest.getAge(),
+//            inviteRequest.getPhoneNumber(),
+//            inviteRequest.getEmail()
+//        );
+//
+//        Member savedMember = memberRepository.save(tempMember);
+//
+//        Long inviterId = inviteRequest.getInviterMemberId();
+//        Long participantId = savedMember.getMemberId();
+//        String subject = "초대장 입니다.";
+//        String code = RandomCode.getRandomCode();
+//
+//        // 초대 메일 발송
+//        mailService.sendMail(
+//            inviteRequest.getEmail(),
+//            subject,
+//            getInviteMailBody(
+//                inviteRequest.getEmail(),
+//                inviteRequest.getName(),
+//                code
+//            )
+//        );
+//
+//        return inviteRepository.save(new Invite(inviterId, participantId, code));
+//    }
 
     public String getInviteMailBody(String email, String name, String code) {
         StringBuilder builder = new StringBuilder();

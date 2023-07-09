@@ -28,18 +28,9 @@ public class MailService {
         mailSender.send(smm);
     }
 
-    public void sendMail(String to, String subject, String content) {
+    public void sendMail(MailMessageInfo mailMessageInfo) {
 
-        MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
-            @Override
-            public void prepare(MimeMessage mimeMessage) throws Exception {
-                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true,
-                    "UTF-8");
-                mimeMessageHelper.setTo(to);
-                mimeMessageHelper.setSubject(subject);
-                mimeMessageHelper.setText(content, true);
-            }
-        };
+        final MimeMessagePreparator mimeMessagePreparator = new InviteMessagePreparator(mailMessageInfo);
 
         try {
             javaMailSender.send(mimeMessagePreparator);

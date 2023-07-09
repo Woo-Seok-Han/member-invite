@@ -46,9 +46,9 @@ public class MemberController {
         return ResponseEntity.ok(savedMember);
     }
 
-    @GetMapping(value = "/mail/send")
-    public ResponseEntity<String> sendMail() {
-        mailService.sendMail("woosuk1893@naver.com", "테스트 메일", "<h1>안녕하세요 메일 테스트 입니다.</h1>");
-        return ResponseEntity.ok("메일이 성공적으로 발송 되었습니다.");
-    }
+//    @GetMapping(value = "/mail/send")
+//    public ResponseEntity<String> sendMail() {
+//        mailService.sendMail("woosuk1893@naver.com", "테스트 메일", "<h1>안녕하세요 메일 테스트 입니다.</h1>");
+//        return ResponseEntity.ok("메일이 성공적으로 발송 되었습니다.");
+//    }
 }
