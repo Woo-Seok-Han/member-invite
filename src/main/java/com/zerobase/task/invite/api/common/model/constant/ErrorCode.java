@@ -17,8 +17,11 @@ public enum ErrorCode {
     // 회원 (Member)
     ALREADY_REGISTERED_MEMBER(HttpStatus.BAD_REQUEST, "M-001", "이미 가입된 회원입니다."),
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "M-002", "해당 회원은 존재하지 않습니다."),
-    NOT_VALID_EMAIL(HttpStatus.BAD_REQUEST, "M-003", "존재하지 않는 이메일 주소 입니다.")
+    NOT_VALID_EMAIL(HttpStatus.BAD_REQUEST, "M-003", "존재하지 않는 이메일 주소 입니다."),
 
+    // 인증 / 인가 (Authorizition)
+    EXPIRED_TOKEN_ACCESS(HttpStatus.BAD_REQUEST, "A-001", "토큰의 유효 기간이 만료 되었습니다."),
+    INVALID_TOKEN_ACCESS(HttpStatus.BAD_REQUEST, "A-002", "유효하지 않은 토큰 입니다."),
     ;
 
     private final HttpStatus httpStatus;

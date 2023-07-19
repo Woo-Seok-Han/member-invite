@@ -1,25 +1,10 @@
 package com.zerobase.task.invite.global.error.exception;
 
-public class AuthorityException extends RuntimeException {
+import com.zerobase.task.invite.api.common.model.constant.ErrorCode;
 
-    public AuthorityException() {
-        super();
-    }
+public class AuthorityException extends BusinessException {
 
-    public AuthorityException(String message) {
-        super(message);
-    }
-
-    public AuthorityException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public AuthorityException(Throwable cause) {
-        super(cause);
-    }
-
-    protected AuthorityException(String message, Throwable cause, boolean enableSuppression,
-        boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public AuthorityException(ErrorCode errorCode) {
+        super(errorCode);
     }
 }
